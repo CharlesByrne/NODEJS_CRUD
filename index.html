@@ -1,0 +1,2247 @@
+<!-- ASSIGNMENT #5 - BY: Charles Byrne (Student Number: 97700266)
+
+
+  FOR CS230[A] - Web Information Processing
+  23rd April 2021 -
+  - Tested on: - Chrome, Edge and Vivaldi 3.6 in Windows 10, XAMPP 
+
+  -       FIREFOX WOULD NOT ALLOW CORS ACCESS ( I spent many hours, had to abandon this browser )
+
+  - Front End - HTML
+
+  #########################################################################################
+
+-->
+<HTML>
+
+<head>
+  <meta http-equiv="Content-Type" charset="UTF-8" />
+  <style>
+    body {
+      user-select: none;
+      /* Avoid text being selected (and anoyingly hilighted) on double click */
+      -webkit-user-select: none;
+      /* Various browsers: Safari,Firefox, Edge/IE10 */
+      -moz-user-select: none;
+      -ms-user-select: none;
+      font-family: sans-serif;
+      font-size: 20px;
+
+    }
+
+    .menuItem {
+      background-color: white;
+      font-size: 14px;
+      padding: 5;
+      cursor: pointer;
+    }
+
+    .topMenu {
+      position: fixed;
+      width: 100vw;
+      top: 0px;
+      background-color: white;
+
+      font-size: 14px;
+      padding: 5;
+    }
+
+    .infoBar {
+      position: fixed;
+      padding: 13px 20px 5px 20px;
+      right: 0;
+      top: 0;
+      background-color: white;
+      color: red;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+    }
+
+    .menuItem_disabled {
+      background-color: white;
+      color: #a3a3a3;
+      font-size: 14px;
+      padding: 5;
+
+    }
+
+
+    .titleField {
+      background-color: gray;
+      color: blue;
+    }
+
+    .titleField_selected {
+      background-color: black;
+      color: white;
+    }
+
+    .menuItem:hover {
+      background-color: rgb(199, 197, 197);
+    }
+
+    .ib {
+      position: absolute;
+      background-color: white;
+      border: 2px solid lightblue;
+      color: blue;
+      overflow: hidden;
+    }
+
+    [contenteditable] {
+      outline: 0px solid transparent;
+    }
+
+    .flexiTable>tbody>tr:nth-child(even) {
+      background-color: #dfdfdf;
+    }
+
+    .flexiTable>tbody>tr:nth-child(odd) {
+      background-color: none;
+    }
+
+
+    .topBar {
+      background-color: #0162b1;
+      color: white;
+      padding: 10px;
+      font-size: 20px;
+    }
+
+    .tr_sm {
+      font-size: 12px;
+    }
+
+    .addressTable {
+      border-collapse: collapse;
+      width: 100%;
+      border: none;
+      border-spacing: 0px;
+      padding: 0px;
+      font-size: 10px;
+    }
+
+    .sabToggle {
+      border-collapse: collapse;
+      width: 100%;
+      border: none;
+      border-spacing: 0px;
+      padding: 0px;
+      width: 33%;
+      font-size: 8px;
+    }
+
+    .addressTable tbody {
+      border: none;
+    }
+
+    .neatText {
+      font-size: 12px;
+    }
+
+    .addressTable td,
+    .addressTable th,
+    .addressTable tr {
+      border-collapse: separate;
+      padding: none;
+      background-color: none;
+    }
+
+    .superBut {
+      font-size: 10px;
+      width: 7px;
+      height: 7px;
+      background-color: #0162b1;
+      color: white;
+      padding: 7px;
+    }
+
+    .superBut:hover {
+      background-color: #000000;
+    }
+
+
+    .overRide {
+      border: none;
+      padding: none;
+    }
+
+    .adr_lab {
+      background-color: #cfebf5;
+      border: none;
+    }
+
+    .superBut2 {
+      background-color: #86898b;
+      color: white;
+      border: none;
+      width: 7px;
+      font-size: 8px;
+    }
+
+    .superBut2:hover {
+      background-color: #0162b1;
+      color: white;
+    }
+
+    .adr_lab2 {
+      font-size: 12px;
+      border: none;
+    }
+
+    .flexiTable th {
+      border-collapse: collapse;
+      text-align: left;
+      background-color: #0162b1;
+      color: white;
+      font-weight: bold;
+    }
+
+    .popUp {
+      position: absolute;
+      top: 380;
+      left: 240;
+      background-color: white;
+      border: 2px solid black;
+      display: none;
+      padding: 4px;
+    }
+
+
+    .shoppingCartWindow {
+      position: fixed;
+      width: 400px;
+      height: 90%;
+      top: 50px;
+      left: 15px;
+      overflow: hidden;
+      display: none;
+      background-color: white;
+      color: black;
+      border: 2px solid black;
+    }
+
+    .popUpContainer {
+      padding: 10px;
+    }
+
+    .promptBox_footer {
+      box-sizing: border-box;
+      position: absolute;
+
+      border: solid 10px white;
+      width: 100%;
+      bottom: 0px;
+      left: 0px;
+      overflow-x: hidden;
+      padding: 0px;
+      background-color: white;
+    }
+
+    .promptBox {
+      position: fixed;
+      width: 600px;
+      height: 200px;
+
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+
+      display: none;
+      background-color: white;
+      color: black;
+      border: 2px solid black;
+    }
+
+
+    .promptBox2 {
+      position: fixed;
+      width: 350px;
+      height: flex;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+
+      display: none;
+      background-color: white;
+      color: black;
+      border: 2px solid black;
+    }
+
+    .shoppingCart_scrollable {
+      overflow: auto;
+      height: 50%;
+    }
+
+    .shoppingCart_footer {
+      height: 110px;
+      bottom: 0px;
+      background-color: #8ea9e4;
+
+    }
+
+    .flexiTable {
+      width: 100%;
+      border: 1px solid black;
+      border-spacing: 0px;
+      padding: 0px;
+    }
+
+    .flexiTable td:not([colspan='100%']),
+    .flexiTable th:not([colspan='100%']) {
+      border: 0px solid black;
+      padding: 8px;
+    }
+
+    td[colspan='100%'] {
+      border: 1px solid black;
+      padding: 3px;
+    }
+
+    .flexiTable2>thead,
+    .flexiTable2>thead>tr>th,
+    .flexiTable2>tbody,
+    .flexiTable2>tbody>tr>td {
+      border: 1px solid black;
+      padding: 8px;
+    }
+
+    .t0 {
+      background-color: none;
+      color: black;
+    }
+
+    .t1 {
+      background-color: lightblue;
+      color: black;
+    }
+
+    .t2 {
+      background-color: #0162b1;
+      color: white;
+    }
+
+    .t3 {
+      font-size: smaller;
+      background-color: yellow;
+      color: black;
+    }
+
+    .t4 {
+      font-size: smaller;
+      background-color: #c8aa23;
+      color: black;
+    }
+
+    .t5 {
+      font-size: smaller;
+      background-color: #574805;
+      color: white;
+    }
+
+    .t6 {
+      background-color: red;
+      color: white;
+    }
+
+    .t7 {
+      background-color: #a31111;
+      color: white;
+    }
+
+    .t8 {
+      background-color: #580202;
+      color: white;
+    }
+
+    .t9 {
+      background-color: #0162b1;
+      color: white;
+      font-weight: bold;
+    }
+
+    .t10 {
+      font-weight: bold;
+      background-color: #a3a3a3;
+    }
+
+
+    .t1_sel {
+      background-color: lightblue;
+      color: black;
+    }
+  </style>
+  <script>
+
+
+    // ###################################################################
+    //    GLOBAL VARIABLES :
+    // ###################################################################
+
+    var globalTable = { collectionName: '', data: {} };
+    var customerAndItemData = {};
+    var global_shoppingCart = {};
+    var global_shoppingCart_edit = { customerIndex: 0, orderIndex: -1, edited: false, message: '' };
+    var global_formBeforeEdit = { fields: {}, data: {} };
+    var addressTypes = [' ', 'S&B', 'S', 'B'];
+    var quStr1 = 'customers';
+    var passOnFlag = -1;
+    var global_drag = false;
+    var drag_element;
+    var global_FormAddressType = 0;
+    var quStr2 = '';
+    var quStr3 = '';
+
+    const SERVER_ADDRESS = 'http://localhost:3030/';
+
+    // ###################################################################
+
+    function goCrud(param, crudBack) {
+      console.log("CRUD: " + param);
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          const crudBackData = this.responseText;
+          if (crudBack !== null) {
+            crudBack(crudBackData);
+          }
+        }
+      };
+
+      //        document.getElementById("result2").innerHTML = "Getting...";
+      xmlhttp.open("GET", param, true);
+      xmlhttp.send();
+
+    } // END: function goCrud()
+
+
+    function testLoad(url, data, crudBack) {
+      var xmlhttp = new XMLHttpRequest();
+
+      xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          const crudBackData = this.responseText;
+          if (crudBack !== null) {
+            crudBack(crudBackData);
+          }
+        }
+      };
+      // eg url: assignment-04.php?fn=load&
+      xmlhttp.open("POST", url, true);
+      xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+      console.log('data',data);
+      xmlhttp.send(JSON.stringify(data));
+
+    } // END: function testLoad()
+
+    function goServer(method, url, crudBackFN) { // INTERACT WITH BACK-END USING GET:
+      if (arguments.length > 3) {
+        var error_callback = arguments[3];
+      } else {
+        var error_callback = null;
+      }
+
+      var xmlhttp = new XMLHttpRequest();
+
+      xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          const crudBackData = this.responseText;
+          if (crudBackFN !== null) {
+            crudBackFN(crudBackData);
+          }
+        } else {
+          // console.log('Server error: ' , xmlhttp.statusText);
+          if (error_callback !== null) error_callback(xmlhttp.statusText);
+        }
+      };
+      // eg url: assignment-04.php?fn=load&
+
+      xmlhttp.open(method, url, true);
+
+      xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+      xmlhttp.setRequestHeader("authorization", "Access-Control-Allow-Headers");
+      xmlhttp.send();
+
+    } // END: function goServer()
+
+
+    function onLoadFunction(theData) {
+      console.log("sending...");
+      showCollection('customers');
+    } // END: function onLoadFunction()
+
+
+
+    function otherFunction(theData) {
+      console.log("sending...");
+      //goCrud
+      testLoad(SERVER_ADDRESS + '?p1=param1&p2=param2&param3=3&',
+        { data: theData }, (crudDataBack) => {
+          console.log("BACH OR back!" + crudDataBack);
+          document.getElementById("statText").innerHTML = crudDataBack;
+        });
+    } // END: function otherFunction()
+
+
+
+    function showCollection(collectionName) {
+
+      if (arguments.length > 1) {
+        var cbFunction = arguments[1]
+      } else {
+        var cbFunction = null;
+      }
+
+      // hide dialogue box if open:
+      showHidePopup('popUp1', false);
+
+      setInfoBar("requesting data...");
+
+      goServer("GET",SERVER_ADDRESS + 'show/' + collectionName,
+        (crudDataBack) => {
+          setInfoBar('Collection ' + collectionName + ' loaded');
+          var crudDataBack = JSON.parse(crudDataBack);
+          globalTable = { collectionName: collectionName, data: crudDataBack };
+          document.getElementById("dynamicTable").innerHTML
+            = showTable_items(globalTable);
+          document.getElementById('button.addRecord').textContent = 'ADD '
+            + collectionName.substring(0, collectionName.length - 1);
+          if (cbFunction !== null) {
+            cbFunction();
+          }
+
+        });
+
+    } // END: function showCollection()
+
+
+
+    function cbQuery(collectionName, crudDataBack) {
+      var crudDataBack = JSON.parse(crudDataBack);
+      console.log("Data Back 2:", crudDataBack);
+      globalTable = { collectionName: collectionName, data: crudDataBack };
+      document.getElementById("dynamicTable").
+        innerHTML = showTable_items(globalTable);
+    }
+
+    function superGoCollection(command, collectionName, theQuery, cbFunction) {
+      console.log('sending... ' + SERVER_ADDRESS + command + '/' + collectionName + '/\'');
+      //goCrud
+
+      testLoad(SERVER_ADDRESS + command + '/' + collectionName + '/',
+        theQuery,
+        (crudDataBack) => {
+          if (cbFunction != null) {
+            cbFunction(crudDataBack);
+          }
+        });
+    } // END: function superGoCollection()
+
+    function printTR(obj, rows) {
+      tableHTML = '<tr>';
+      for (var ii = 0; ii < rows.length; ii++) {
+        tableHTML += "<td>" + obj[rows[ii]] + "</td>";
+      }
+      tableHTML += '</tr>';
+      return tableHTML;
+    }
+
+    // ==============================================================
+
+
+    // ##############################################################################
+
+    function goDelete(tablePos) {  // SENDS THE DELETE COMMAND TO THE BACK-END
+
+      var elementID = globalTable.data[tablePos]._id;
+      var collectionName = globalTable.collectionName;
+      //pig
+      // +collectionName + "'', '" + elementID + "', " 
+
+      console.log("goDelete: " + elementID + " " + tablePos);
+      showHidePopup('popUp1', false);
+      console.log('IS THIS BEING CALLED MORE THAN ONCE?----------------------------------');
+    
+      goServer("DELETE",SERVER_ADDRESS + collectionName + '/'+ elementID,
+      (crudDataBack) => {
+        console.log('IS THIS BEING CALLED MORE THAN ONCE?')
+
+console.log("crudDataBack",crudDataBack)
+        var crudDataBack = JSON.parse(crudDataBack);
+        console.log("tablePos", tablePos);
+        if (tablePos > -1 && tablePos < globalTable.data.length) {
+          globalTable.data.splice(tablePos, 1);
+          document.getElementById("dynamicTable").
+            innerHTML = showTable_items(globalTable);
+        }
+        console.log("Records Updated:", crudDataBack);
+
+        });
+      
+      
+
+
+    } // END: function goDelete()
+
+
+    function goDelete_address(tablePos, addrTablePos) {  // SENDS THE DELETE COMMAND TO THE BACK-END
+
+      // +collectionName + "'', '" + elementID + "', " 
+      var elementID = globalTable.data[tablePos]._id;
+      var formData = { _id: elementID };
+      var curAddr = globalTable.data[tablePos].address;
+
+      console.log("goDelete_address: " + elementID + " " + tablePos + " - N: " + addrTablePos);
+      if (passOnFlag > -1) {
+
+        var flagJob = {
+          curFlag: curAddr[addrTablePos].type,
+          passOnTo: passOnFlag
+        }
+        if (flagJob.curFlag == 1) {
+          flagJob.makeFlag = 1;
+        } else {
+          if (curAddr[flagJob.passOnTo].type == 0) {
+            flagJob.makeFlag = flagJob.curFlag;
+          } else {
+            flagJob.makeFlag = 1;     // make s&b
+          }
+        }
+
+        console.log('flag: ', globalTable.data[tablePos].address[addrTablePos].type);
+        console.log('Pass on to: ', passOnFlag);
+
+        if (passOnFlag > addrTablePos) {  // When you delete the 'addrTablePos' record 'passOnFlag' will be one less
+          flagJob.passOnTo--;
+        }
+
+        var flagOBJ = { '$set': { ['address.' + flagJob.passOnTo + '.type']: flagJob.makeFlag } };
+
+      } else {
+        var flagJob = null;
+        flagOBJ = null;
+      }
+      console.log('flagJob', flagJob);
+      //  return;
+
+      //  addressRec = { '$set': { address: addressRec } };
+
+      var postOBJ = { flag: flagOBJ };
+
+
+      //return;
+      showHidePopup('popUp1', false);
+      setInfoBar('Deleting address...');
+      var url = 'deleteAddress/'+ elementID 
+      console.log('url',url);
+      superGoCollection(url, addrTablePos, postOBJ, (crudDataBack) => {
+        setInfoBar('Address deleted.');
+
+
+        var crudDataBack = JSON.parse(crudDataBack);
+        console.log("FD: " + JSON.stringify(formData));
+
+        var addressRec = globalTable.data[tablePos].address;
+        addressRec.splice(addrTablePos, 1);
+        console.log("addressRec: ", addressRec);
+
+        if (flagJob !== null) {
+          curAddr[flagJob.passOnTo].type = flagJob.makeFlag;
+        }
+
+
+        document.getElementById("dynamicTable").
+          innerHTML = showTable_items(globalTable);
+        //          }
+        console.log("Records Updated:", crudDataBack);
+
+
+      });
+
+
+    } // END: function goDelete_address()
+
+
+    // ##############################################################################
+
+    function validateItem(formData) {    // validates the Item form
+
+      if (formData.Manufacturer.length < 1) return "'Manufacturer' is a required field. Please fill in Manufacturer.";
+      if (formData.Model.length < 1) return "'Model' is a required field. Please fill in Model.";
+      if (formData.Price == '' || isNaN(formData.Price) || formData.Price < 0 || formData.Price > 10000000) return "'Price' must be a number between 0 - 10,000,000.";
+      return '';
+
+    } // END: function validateItem()
+
+    function validateCustomer(formData) {    // validates the Customer form
+
+      if (formData.FirstNames.length < 1) return "'FirstNames' is a required field. Please fill in FirstNames.";
+      if (formData.Surname.length < 1) return "'Surname' is a required field. Please fill in Surname.";
+      if (formData.Mobile.length < 1) return "'Mobile' is a required field. Please fill in Mobile.";
+      if (formData.Email.length < 1) return "'Email' is a required field. Please fill in Email.";
+      return '';
+
+    } // END: function validateCustomer()
+
+    function validateOrder(formData) {    // validates the Order form
+
+      //if (formData.FirstNames.length<1) return "'FirstNames' is a required field. Please fill in FirstNames.";
+      return '';
+
+    } // END: function validateOrder()
+
+
+    function validateAddress(formData) {    // validates the Order form
+
+      if (formData.Line1.length < 1) return "'Line 1' is a required field. Please fill in line 1.";
+      if (formData.Town.length < 1) return "'Town' is a required field. Please fill in Town.";
+      if (formData.County.length < 1) return "'County' is a required field. Please fill in County.";
+      return '';
+
+    } // END: function validateOrder()
+
+    function superSend(collectionName, elementID, tablePos) { // send our [new / changed] data to the database
+
+      // Check if we are editing an address: --------------------------
+
+      if (arguments.length > 3) {
+
+        console.log('EDITING AN ADDRESS:');
+        var editingAddress = true;
+        var addrTablePos = arguments[3];
+        var insertingNEWaddress = (addrTablePos == -1);
+
+      } else {
+        var editingAddress = false;
+        var addrTablePos = -1;
+
+      }
+
+      // See if this is a NEW or an EDIT :  ---------------------------
+
+      if (elementID == -1) var newRecord = true;
+      else newRecord = false;
+
+      // --------------------------------------------------------------
+
+      console.log(collectionName, elementID, tablePos);
+
+      var formAfterEdit = {};
+      var addressTypeChange = -1;
+
+      // -----------------------------------------  glean data from form elements:
+
+      for (const key of global_formBeforeEdit.fields) {
+        console.log('KEY:- ', key, ' VAL: ', document.getElementById(key).value);
+        formAfterEdit[key] = document.getElementById(key).value;
+      }
+
+      if (formAfterEdit.hasOwnProperty('type')) {
+        formAfterEdit.type = global_FormAddressType;
+      }
+
+      // ----------------------------------------------------------------------------
+
+      // Validate: ------------------------------------------
+
+      if (collectionName == 'items') {
+        var validateForm = validateItem;
+      } else if (collectionName == 'customers') {
+        var validateForm = validateCustomer;
+      } else if (collectionName == 'orders') {
+        var validateForm = validateOrder;
+      } else if (collectionName == 'address') {
+        var validateForm = validateAddress;
+        collectionName = 'customers';
+      } else return;
+
+      var valText = validateForm(formAfterEdit); // if a validation error has occured :
+      if (valText != '') {
+        document.getElementById("validateMessage").innerHTML = "<div class=\"neatText\" style=\"color:red;\" id=\"validateMessage\">" + valText + "</div>";
+
+        return;
+
+      }
+
+      // ------------------------------------------------------
+
+
+      console.log("superSend: " + elementID);
+      console.log("before Edit: ", JSON.stringify(global_formBeforeEdit.data));
+      console.log("NOW: formAfterEdit: ", JSON.stringify(formAfterEdit));
+
+      // --------------------------------------------------------------------
+
+      if (editingAddress) {
+        console.log('EDITING AN ADDRESS:');
+
+        console.log('findEditedData_address -> addrTablePos:', addrTablePos);
+        console.log('globalTable.data[elementID].address : ', globalTable.data[tablePos].address);
+
+        // get the number of addresses for this customer, ( if new: before this ) :
+
+        if (globalTable.data[tablePos].hasOwnProperty('address') &&
+          globalTable.data[tablePos].address.length > 0) {
+
+          var addrCount = globalTable.data[tablePos].address.length;
+
+        } else {
+          var addrCount = 0;
+          console.log("FIRST ADDRESS");
+
+        }
+
+        console.log(" ===================================== addrCount", addrCount);
+
+        // Backup the form data if this is an edit : 
+        // this is because the field names will be changed to a long form understood by mongoDB
+        //'address.0.Line1'
+        // but we need the old form to add to our updated table
+
+        if (insertingNEWaddress) {
+          var formAfterEditBackup = JSON.parse(JSON.stringify(formAfterEdit));
+        }
+
+        // see if shipping type has changed, if so save the change:
+
+        if (global_formBeforeEdit.data.type != global_FormAddressType) { // if the addresstype has changed
+          var addressTypeChange = global_FormAddressType;
+          formAfterEdit.type = global_FormAddressType;
+        }
+
+        // clean the data ( remove fields that haven't changed ) :
+        // NB: if first address need to keep simple format not address.0.etc...
+
+        if (globalTable.data[tablePos].hasOwnProperty('address')) {
+          formAfterEdit = findEditedData_address(formAfterEdit, addrTablePos, addrCount);
+        }
+
+        console.log('formAfterEdit - ADDRESS: ->> ', formAfterEdit);
+        //      return;
+
+        //      if ( Object.keys(formAfterEdit).length !== 0 ) {
+        // address needs to be: { '$set': { 'address.0.Line1': '7 College Rise' } }
+
+        //      }
+      } else {
+        console.log('NOT!!! editing an address:');
+
+        // clean the data ( remove fields that haven't changed ) :
+
+        formAfterEdit = findEditedData(formAfterEdit);
+
+        if (formAfterEdit.hasOwnProperty('Price')) formAfterEdit.Price = parseFloat(formAfterEdit.Price);
+
+      }
+
+
+      // i.e. add 'address.0.'
+      // TO-DO: NEED TO CHECK ADDRESS DATA FOR CHANGES
+
+      console.log("formAfterEdit: ", formAfterEdit);
+
+      console.log("CHANGED");
+
+      if (Object.keys(formAfterEdit).length !== 0) {
+        if (elementID != -1) {
+          console.log("UPDATE: " + elementID);
+          //  formAfterEdit._id = elementID;
+          var cmd = 'update';
+        } else {
+          console.log("ADD" + elementID);
+          var cmd = 'add';
+        }
+        var addrDataEdits = {};
+        if (addressTypeChange > -1 && globalTable.data[tablePos].hasOwnProperty('address')) {  // if type has been changed
+
+          for (var i = 0; i < addrCount; i++) {
+            if (i != addrTablePos) { // DEMOTE S&B->S OR B, S or B (depending) -> 0
+              if (globalTable.data[tablePos].address[i].type > 0) {
+                if (addressTypeChange == 1) {
+                  formAfterEdit['address.' + i + '.type'] = 0;
+                  //globalTable.data[tablePos].address[i].type = 0;
+                } else if (addressTypeChange == 2) { // SHIPPING
+                  if (globalTable.data[tablePos].address[i].type == 1) {
+                    formAfterEdit['address.' + i + '.type'] = 3;
+                    //globalTable.data[tablePos].address[i].type = 3;
+                  } else if (globalTable.data[tablePos].address[i].type == 2) {
+                    formAfterEdit['address.' + i + '.type'] = 0;
+                    //globalTable.data[tablePos].address[i].type = 0;
+                  }
+                } else if (addressTypeChange == 3) { // BILLING
+                  if (globalTable.data[tablePos].address[i].type == 1) {
+                    formAfterEdit['address.' + i + '.type'] = 2;
+                    //globalTable.data[tablePos].address[i].type = 2;
+                  } else if (globalTable.data[tablePos].address[i].type == 3) {
+                    formAfterEdit['address.' + i + '.type'] = 0;
+                    //globalTable.data[tablePos].address[i].type = 0;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        console.log('formAfterEdit UPDATED:', formAfterEdit);
+
+        console.log("TP: " + tablePos);
+
+        showHidePopup('popUp3', false);
+
+        //###################################################
+
+
+        console.log('formAfterEdit', formAfterEdit);
+
+        if (editingAddress && !globalTable.data[tablePos].hasOwnProperty('address')) {
+          formAfterEdit = { address: [formAfterEdit] };
+        }
+        var title = (editingAddress) ? 'address ' : collectionName;
+        setInfoBar('Adding ' + title.substring(0, title.length - 1) + ' record...');
+        superGoCollection(cmd, collectionName, { query: { _id: elementID }, update: formAfterEdit }, (crudDataBack) => {
+          setInfoBar(title.substring(0, title.length - 1) + ' record added.');
+          var crudDataBack = JSON.parse(crudDataBack);
+          console.log("DATA BACK FROM NODE-JS : " + JSON.stringify(formAfterEdit));
+          if (cmd == 'add') {
+            globalTable.data.push(crudDataBack.updated);
+
+          } else if (editingAddress) {
+            // could say if crudDataBack.updated > 0
+            //          console.log("ADD ADDRESS: (formAfterEdit) ", formAfterEditBackup );
+            //          globalTable.data[tablePos].address.push(formAfterEditBackup);
+
+            if (insertingNEWaddress) {
+              addrTablePos = addrCount;
+              addrCount++;
+              //            if (addrCount == 1) {
+              if (globalTable.data[tablePos].hasOwnProperty('address')) {
+                globalTable.data[tablePos].address.push(formAfterEditBackup); //Line1: '', Line2: '', Town: '', County: '', Eircode: '', type: 1 };
+              } else {
+                globalTable.data[tablePos].address = [formAfterEditBackup]; //Line1: '', Line2: '', Town: '', County: '', Eircode: '', type: 1 };
+              }
+              //           }// else 
+              //  globalTable.data[tablePos].address.push([]);
+              // }
+
+            }
+
+
+            // } else if (editingAddress) {
+            var subObject = getSubObject(globalTable.data[tablePos], 'address.' + addrTablePos);
+            console.log('subObject: ', subObject);
+            var typesToChange = [];
+            for (var key in formAfterEdit) {
+              var keys = key.split(".");
+              var subKey = keys.pop();
+
+              console.log('tablePOS: ' + tablePos, " KEY: " + key + " - ", 'formAfterEdit: ' + formAfterEdit[key]);
+              console.log(": " + globalTable.data[tablePos][key]);
+              if (subKey == 'type') {
+                subKey = keys.pop();
+                console.log('subKey: - type: ', subKey);
+                typesToChange.push({ id: subKey, data: formAfterEdit[key] });
+              } else {
+                console.log('CHANGE: subObject[' + subKey + '] ', subKey, " = ", formAfterEdit[key]);
+                subObject[subKey] = formAfterEdit[key];
+              }
+
+            }
+            if (Object.keys(typesToChange).length !== 0) {
+              for (const x of typesToChange) {
+                globalTable.data[tablePos].address[x.id].type = x.data;
+              }
+            }
+            console.log('--------------------->>>>>>>>>>>>>>> TYPES: ', typesToChange);
+
+          } else { // ---------------- editing other than an address ---------------------
+
+            if (tablePos > -1 && tablePos < globalTable.data.length) {
+              console.log("DATABEFORE: ", JSON.stringify(globalTable.data[tablePos]));
+              console.log("DATAAFTER: ", JSON.stringify(crudDataBack.updated));
+              for (var key in formAfterEdit) {
+                console.log(tablePos + " - " + key + " - " + formAfterEdit[key]);
+                globalTable.data[tablePos][key] = formAfterEdit[key];
+              }
+            }
+          } // END: Not editing address
+
+          document.getElementById("dynamicTable").
+            innerHTML = showTable_items(globalTable); //
+          console.log("Records Updated:", crudDataBack);
+        });
+        //    goCrud(url, true, 0); // change to , 2); later
+
+      } else {
+        console.log("Nothing to send!");
+      }
+
+
+    } // END: function superSend()
+
+
+    // =================================================
+
+
+    function allowDrag(element_id) {
+      var x1 = 0, y1 = 0, ecX = 0, ecY = 0;
+      var element = document.getElementById(element_id);
+      document.getElementById(element_id + "_").onmousedown = dragMouseDown;
+
+      function dragMouseDown(event) {
+        event = event || window.event;
+        event.preventDefault();
+        ecX = event.clientX;
+        ecY = event.clientY;
+        document.onmouseup = stopDrag;
+        document.onmousemove = startDrag;
+      }
+
+      function startDrag(event) {
+        event = event || window.event;
+        event.preventDefault();
+        x1 = ecX - event.clientX;
+        y1 = ecY - event.clientY;
+        ecX = event.clientX;
+        ecY = event.clientY;
+        element.style.top = (element.offsetTop - y1) + "px";
+        element.style.left = (element.offsetLeft - x1) + "px";
+      }
+
+      function stopDrag() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+      }
+    }
+
+
+
+    // =================================================
+
+
+    function goNew() {
+      var rcMenuElement = document.getElementById("popUp1");
+      var tt = "<div id=\"popUp1\" ><table><tbody><tr><td>Title: </td><td><input id=\"f0\"></td></tr>";
+      tt += "<td>Firstname: </td><td><input id=\"f1\"></td></tr>";
+      tt += "<td>Surname: </td><td><input id=\"f2\"></td></tr>";
+      tt += "<td>Email: </td><td><input id=\"f3\"></td></tr>";
+      tt += "<td>Mobile: </td><td><input id=\"f4\"></td></tr>";
+      tt += "<td>&nbsp;</td><td><button onclick=\"goAddRec();\">ADD</button></td></tr>";
+      tt += "</tbody></table></div>";
+      rcMenuElement.innerHTML = tt;
+      rcMenuElement.style.display = "block";
+    } // END: function goNew()
+
+    function showHidePopup(popUp, showHide) {
+      document.getElementById(popUp).style.display = (showHide) ? "block" : "none";
+    }
+
+
+    function getSubObject(obj, objStr) {
+
+      return objStr.split('.').reduce((o, i) => o[i], obj);
+
+      // PRE ECMAScript 6: //    function index(obj,i) {return obj[i]}
+      //'a.b.etc'.split('.').reduce(index, obj)
+
+    }
+
+    // Check a submitted form for data that has changes, avoids sending redundant data
+
+    function findEditedData(element) { // references global_formBeforeEdit
+      var editedData = {};
+      for (var key in element) {
+        if (!global_formBeforeEdit.data.hasOwnProperty(key) || element[key] != global_formBeforeEdit.data[key]) {
+          editedData[key] = element[key];
+        }
+      }
+      return editedData;
+
+    } // END: function findEditedData()
+
+
+    function findEditedData_address(element, pos, addrCount) { // references global_formBeforeEdit
+      var editedData = {};
+      console.log("findEditedData_address: POS: " + pos);
+      editedData = {};
+      if (pos == -1) {
+        var isNew = true;
+        pos = addrCount;
+      } else {
+        var isNew = false;
+      }
+
+      var field;
+      console.log('element', element);
+      for (var key in element) {
+        field = 'address.' + pos + '.' + key;
+        console.log(global_formBeforeEdit.data.hasOwnProperty(field), global_formBeforeEdit.data[key]);
+        //      if (isNew || !global_formBeforeEdit.data.address[pos].hasOwnProperty(key) || element[key] != global_formBeforeEdit.data.address[pos][key]) {
+        try {
+          if (element[key] != global_formBeforeEdit.data[key] || isNew) {
+            console.log('FIELD TO SET: ', field);
+
+            editedData[field] = element[key];
+          }
+        } catch { console.log('ADDRESS FORM ELEMENT NOT FOUND'); }
+
+        // address needs to be: { '$set': { 'address.0.Line1': '7 College Rise' } }
+        //      }
+      }
+      return editedData;
+
+    } // END: function findEditedData_address()
+
+
+    function getSuperForm(data, fields) {
+      var st = "";
+
+      for (const key of fields) {
+        console.log('KEY: ', key, 'DATA: ', data[key]);
+        st += "<tr><td>" + key + ": </td><td><input id=\"" + key + "\" value=\"" + data[key] + "\"></td></tr>";
+      }
+
+      return st;
+
+    } // END: getSuperForm()
+
+    function goNewOrder() {
+      goShoppingCart(-1);
+    }
+
+    function superForm(collectionName, tablePos) {      // DISPLAYS "EDIT / NEW ADDRESS" FORM
+
+      if (collectionName == '*' && globalTable.collectionName == 'orders') {
+        goNewOrder();
+        return;
+      }
+      console.log('superForm: arguments', arguments);
+
+      var element = 'popUp3';
+      var title = '';
+
+
+      if (collectionName == 'address') {
+        title = 'address';
+
+        editingAddress = true;
+        var fields = ['Line1', 'Line2', 'Town', 'County', 'Eircode', 'type'];
+
+        // IF WE ARE EDITING AN ADDRESS : or       editingAddress = true;
+
+        console.log("EDIT ADDRESS - arguments[2]", arguments[2]);
+
+        // THERE MUST BE 3 arguments in this function, no need to check (if (addrTablePos > -1) )
+
+        var addrTablePos = arguments[2];
+        var isNew = (addrTablePos == -1);
+
+        if (!isNew) var data = globalTable.data[tablePos].address[addrTablePos];
+
+      } else {
+
+        var editingAddress = false;
+        var isNew = (tablePos == -1);
+
+        if ((collectionName == '*' && globalTable.collectionName == 'items') || (globalTable.collectionName == 'items')) {
+          var fields = ['Manufacturer', 'Model', 'Price'];
+          title = 'item';
+        } else if ((collectionName == '*' && globalTable.collectionName == 'customers') || (globalTable.collectionName == 'customers')) {
+          var fields = ['Title', 'FirstNames', 'Surname', 'Mobile', 'Email'];
+          title = 'customer';
+        } else if (collectionName == 'orders') {
+          var fields = ['Title', 'FirstNames', 'Surname', 'Mobile', 'Email'];
+        } else {
+          var fields = [];
+        }
+
+        if (!isNew) var data = globalTable.data[tablePos];
+
+      }
+
+      global_formBeforeEdit.fields = fields;
+
+      var _id = (isNew && !editingAddress) ? -1 : globalTable.data[tablePos]._id;
+
+      if (isNew) {  //  ------------ BLANK FORM ELEMENT:
+        var data = {};
+        for (var key of fields) data[key] = '';
+      }
+
+      // ----------- Set the function on click ------------------------------
+
+      var superSend_FN = (editingAddress)
+        ? "superSend('address', '" + _id + "', " + tablePos + ", " + addrTablePos + ");"
+        : "superSend('" + globalTable.collectionName + "', '" + _id + "', " + tablePos + ");";
+
+      // ---------------------- Save the data before the form was edited:
+
+      global_formBeforeEdit.data = data;
+
+      var rcMenuElement = document.getElementById(element);
+      var tt = '<div id="' + element + '_" class="topBar"><span>'
+        + (isNew ? 'Add' : 'Edit') + ' ' + title + ' :</span>'
+        + '<span style="float:right;"><button onclick="showHidePopup(\'' + element + '\',false);">x</button></span></div>';
+      tt += '<div style="padding:20px;"><div id="validateMessage"></div><table><tbody>';
+
+      if (editingAddress) var typeField = fields.pop();    // remove type field
+
+      tt += getSuperForm(data, fields);
+
+
+      if (editingAddress) {
+        fields.push(typeField);
+        tt += getRadioItems(data.type);
+      }    // put it back
+
+
+      tt += '<tr><td></td><td><button onclick="' + superSend_FN + '">' + (isNew ? 'Add' : 'Edit') + '</button></td></tr>'
+        + '</tbody></table></div>';
+
+      rcMenuElement.innerHTML = tt;
+
+      rcMenuElement.style.display = "block";
+      allowDrag(element);
+
+      // SET RADIO ITEM IF ADDRESS :   ---------------------------------------
+
+      if (editingAddress) setRadioItems(data, tablePos, addrTablePos);
+
+      // ------------------------------------------------------------------- 
+
+      inDialogueBox = true;
+
+    } // END: function superForm()
+
+
+    function createDD(obj, id, name, IDField, fields, onchangeFN) {
+
+
+      var ddList = '<select id="' + id + '" onchange="' + onchangeFN + '" name="' + name + '">';
+      var _id;
+
+      if (arguments.length > 6) {  // add a 'please choose...'
+        ddList += '<option value="-1">' + arguments[6] + '</option>';
+      }
+
+      if (typeof obj != "undefined") {
+          for (var i = 0; i < obj.length; i++) {
+            var label = '';
+            if (IDField == null) _id = i; else _id = obj[i][IDField];
+
+            for (var key of fields) {
+              if (key == 'Price') label += '€';
+              label += obj[i][key] + ' ';
+            }
+            ddList += '<option value="' + _id + '">' + label + '</option>';
+          } // for loop
+        }
+
+
+      ddList += "</select>";
+
+      return ddList;
+    }
+
+    function getShoppingCartData(orderIndex) {
+
+      // hide dialogue box if open:
+      showHidePopup('popUp1', false);
+      setInfoBar('Loading data from database...');
+
+      console.log("requesting data...");
+
+
+      goServer("GET",SERVER_ADDRESS + 'getSCInfo/',
+        (crudDataBack) => {
+          var crudDataBack = JSON.parse(crudDataBack);
+
+          // NB: save data in global :
+          customerAndItemData = crudDataBack;
+          setInfoBar('');
+          showShoppingCart(orderIndex);
+
+        });
+
+    } // END: function getShoppingCartData()
+
+
+    function goShoppingCart(orderIndex) {
+      getShoppingCartData(orderIndex);
+    }
+
+    function findSAB(addr, typeWanted) {
+      for (var i in addr) if (addr[i].type == typeWanted || addr[i].type == 1) return i;
+      return -1;
+    }
+
+
+      function changeSAB_DDS(index, sORb) {
+
+        document.getElementById('form.DD_' + sORb + 'A').innerHTML
+          = getAddressDDs(customerAndItemData.customers, index, sORb);
+
+        var sabIndex = findSAB(customerAndItemData.customers[index].address, (sORb == 'S' ? 2 : 3), sORb);
+
+        var element = document.getElementById('form.' + sORb + 'A');
+
+        if (element !== null) {
+          element.value = sabIndex;
+
+          // save the address to global:
+          console.log('sORb', sORb);
+          if (sORb == 'S') var addressToSave = global_shoppingCart.customer.shippingAddress;
+          else var addressToSave = global_shoppingCart.customer.billingAddress;
+
+          switchObject(addressToSave, customerAndItemData.customers[index].address[sabIndex]);
+          setSendOrderButton(true);        
+        } else {
+          global_shoppingCart.customer.shippingAddress.Line1 = ''; // this is a flag for the send button
+          console.log('NO address: ');
+          setSendOrderButton(true);
+        }
+
+
+      } // END: function changeSAB_DDS()
+
+
+
+
+    function sc_ChangeName(index) {
+      var thisCustomer = customerAndItemData.customers[index];
+
+      global_shoppingCart_edit.customerIndex = index;
+      console.log('CHANGE CUSTOMER OF ORDER: ', global_shoppingCart);
+      console.log('BEFORE: ', global_shoppingCart.customer);
+      global_shoppingCart.customer.name = thisCustomer.Title + ' ' + thisCustomer.FirstNames + ' ' + thisCustomer.Surname;
+      global_shoppingCart.customer._id = thisCustomer._id;
+      console.log('AFTER: ', global_shoppingCart.customer);
+      setSendOrderButton(true);
+    }
+
+    function goSC_NameDD() {
+      if (global_shoppingCart.customer._id == -1) {
+        document.getElementById('form.customers').remove(0);
+      }
+
+      console.log('event.target.name: ', this.event.target.name);
+      console.log('change name');
+
+      var index = this.event.target.value;
+      setSendOrderButton(true);
+      sc_ChangeName(index);
+      console.log('event.target.value: ', index);
+
+      //iii
+      changeSAB_DDS(index, 'S');
+      changeSAB_DDS(index, 'B');
+    }
+
+    function addFirstAddress( customerIndex ) {
+      showHidePopup('popUp2', false);
+      showCollection('customers', ()=>{
+        goEdAddress( customerIndex, -1);
+      });
+
+    }
+
+    function getAddressDDs(customerList, customerIndex, sORb) {
+
+      var thisCustomer = customerList[customerIndex];
+
+      if (thisCustomer.hasOwnProperty('address') && thisCustomer.address.length > 0 ) {
+      var dd = createDD(thisCustomer.address, 'form.' + sORb + 'A', 'form.' + sORb + 'A',
+              null, ['Line1', 'Town', 'County'], 'goAddrDD();');
+      } else {
+        console.log('customerIndex',customerIndex);
+        dd = 'Please add address data for this customer.'
+        +  '<span class="superBut2" onclick="addFirstAddress(' + customerIndex + ', -1);"> ADD NEW ADDRESS</span>';
+      }
+      return dd;
+    }
+
+    function goAddrDD() {
+      console.log(event.target.value);
+      console.log(global_shoppingCart);
+
+      var addressIndex = event.target.value;
+
+      if (event.target.id == 'form.SA') {
+        var fieldToEdit = global_shoppingCart.customer.shippingAddress;
+      } else {
+        var fieldToEdit = global_shoppingCart.customer.billingAddress;
+      }
+      console.log('fieldToEdit', fieldToEdit);
+      console.log('BEFORE: ', fieldToEdit);
+      switchObject(fieldToEdit,
+        customerAndItemData.customers[global_shoppingCart_edit.customerIndex].address[addressIndex]);
+
+      console.log('CHANGED: ', global_shoppingCart);
+    }
+
+    function switchObject(obj1, obj2) {
+      for (var x in obj1) {
+        obj1[x] = obj2[x];
+      }
+    }
+
+
+    function findIndex(obj, field, _target) {  // Compares record IDs and returns index
+      for (var i = 0; i < obj.length; i++) {
+        if (obj[i][field] == _target) {
+          return i;
+        }
+      }
+      return -1;
+
+    } // END: findIndex()
+
+    function findAddressIndex(obj, _target) {  // Compares record IDs and returns index
+      for (var i = 0; i < obj.length; i++) {
+        if (obj[i].Line1 == _target.Line1
+          && obj[i].Line2 == _target.Line2
+          && obj[i].Town == _target.Town
+          && obj[i].County == _target.County
+        ) {
+          return i;
+        }
+      }
+      return -1;
+
+    } // END: findIndex()
+
+
+
+
+    function showShoppingCart(orderIndex) {
+
+      // Importing the whole customerAndItemData is impractical for real-life solutions
+      // I would refine this if I had more time, but I wanted to get to the essentials.
+
+
+      //      console.log('sc: ' , db);
+      var element = 'popUp2';
+      var rcMenuElement = document.getElementById(element);
+
+      // create a deep (GLOBAL) copy of our order - so that we can edit it: 
+
+      if (orderIndex == -1) {
+        global_shoppingCart = {
+          _id: -1,
+          orderDate: Date.now(),
+          customer: {
+            _id: "-1",
+            name: "",
+            shippingAddress:
+            {
+              Line1: "",
+              Line2: "",
+              Town: "",
+              County: "",
+              Eircode: "",
+              type: 1
+            },
+            billingAddress:
+            {
+              Line1: "",
+              Line2: "",
+              Town: "",
+              County: "",
+              Eircode: "",
+              type: 1
+            }
+          }, "shoppingCart": [], "discount": { "amount": 0, "desc": "FULL PRICE" }
+        };
+
+      } else {
+        global_shoppingCart = JSON.parse(JSON.stringify(globalTable.data[orderIndex]));
+      }
+
+
+      var customerList = customerAndItemData.customers
+      if (orderIndex == -1) {
+        var customerIndex = -1;
+      } else {
+        var customerIndex = findIndex(customerList, '_id', global_shoppingCart.customer._id);
+        if (customerIndex == -1) {
+          var thisCustomer = null;
+        } else {
+          var thisCustomer = customerList[customerIndex];
+        }
+      }
+
+      global_shoppingCart_edit = { customerIndex: customerIndex, orderIndex: orderIndex, edited: false, message: '' };
+
+
+      console.log('customerIndex: ', customerIndex);
+
+      // ID = global_shoppingCart._id CUSTOMER: global_shoppingCart.customer._id
+
+
+      if (global_shoppingCart.customer._id == -1) {
+        var dropDown_name = createDD(customerList, 'form.customers', 'form.customers',
+          null, ['Title', 'FirstNames', 'Surname'], 'goSC_NameDD();',
+          'Please choose a customer...');
+        var dropDown_SA = '';
+        var dropDown_BA = '';
+      } else if (thisCustomer == null) {
+        var dropDown_name = global_shoppingCart.customer.name
+          + ': [deleted]';
+        var dropDown_SA = getAddress(global_shoppingCart.customer.shippingAddress);
+        var dropDown_BA = getAddress(global_shoppingCart.customer.billingAddress);
+      } else {
+        var dropDown_name = createDD(customerList, 'form.customers', 'form.customers',
+          null, ['Title', 'FirstNames', 'Surname'], 'goSC_NameDD();');
+              //        var thisCustomer = customerList[customerIndex];
+            if (thisCustomer.hasOwnProperty('address') && thisCustomer.address.length > 0 ) {
+              var dropDown_SA = getAddressDDs(customerList, customerIndex, 'S');
+              var dropDown_BA = getAddressDDs(customerList, customerIndex, 'B');
+            } else {
+              console.log('customerIndex',customerIndex);
+              var dropDown_SA = '<div> Please add address data for this customer.</div>'
+              var dropDown_BA  = '<div class="superBut2" onclick="addFirstAddress(' + customerIndex + ', -1);"> ADD NEW ADDRESS</div>';
+          }
+      }
+
+
+      var sendButton = setSendOrderButton(false);
+
+      // createDD(obj, id, name, IDField, fields, onchangeFN)
+
+      if (global_shoppingCart._id == -1) {
+        var deleteButton = '';
+      } else {
+        var deleteButton = '<span id="form.sendButton"><button onclick="showHidePopup(\'popUp2\', false);'
+          + ' goDel_prompt(' + orderIndex + ');">DELETE</button></span>';
+      }
+
+      var tt = '<div id="popUp2_" class="topBar"><span>SHOPPING CART</span><span style="float:right;"><button onclick="showHidePopup(\'popUp2\',false);">x</button></span></div>'
+        + '<table><tbody>'
+        + '<tr><td>Order Date</td><td>' + (new Date(global_shoppingCart.orderDate).toLocaleString()) + '</td></tr>'
+        + '<tr><td>Name</td><td>' + dropDown_name + '</td></tr>'
+        + '<tr><td>Shipping Address</td><td><div id="form.DD_SA">' + dropDown_SA + '</div></td></tr>'
+        + '<tr><td>Billing Address</td><td><div id="form.DD_BA">' + dropDown_BA + '</div></td></tr>'
+        + '</tbody></table></div>'
+        + '<div class="shoppingCart_scrollable" id="form.scrollable" style="padding:10px"><div id="form.cart">' + printShoppingCart(global_shoppingCart, orderIndex, true) + '</div></div>'
+
+        + '<div class="shoppingCart_footer"><table><tbody><tr><td><span id="form.discount.percent">' + getDiscount(false) + '</span></td><td><input id="form.discount" onkeyup="updateDiscountDesc();" value="' + global_shoppingCart.discount.desc + '""></td></tr>'
+        + '<tr><td>' + sTable(prBut(' - ', 'changeCart(' + orderIndex + ', -1 ,-1);'),
+          prBut(' + ', 'changeCart(' + orderIndex + ', -1 ,1);')) + '</td><td><div id="form.addItem">' + addItemDD() + '</div></td></tr>'
+        + '<tr><td></td><td><span id="form.sendButton">' + sendButton + '</span>' + deleteButton + '</td></tr>';
+
+      tt += '<div id="validateMessage"></div></div>';
+
+
+      rcMenuElement.innerHTML = tt;
+      rcMenuElement.style.display = "block";
+      allowDrag('popUp2');
+
+
+      // SET THE CUSTOMER DROPDOWN:
+
+      if (thisCustomer != null) {
+        document.getElementById('form.customers').value = customerIndex;
+      }
+
+      // SET THE SHIPPING AND BILLING DROPDOWNS:
+
+      if (global_shoppingCart.customer._id == -1) {
+        var saIndex = -1;
+        var baIndex = -1;
+      } else {
+        if (thisCustomer != null) {
+
+          var saIndex = findAddressIndex(thisCustomer.address, global_shoppingCart.customer.shippingAddress);
+          var baIndex = findAddressIndex(thisCustomer.address, global_shoppingCart.customer.billingAddress);
+          document.getElementById('form.SA').value = saIndex;
+          document.getElementById('form.BA').value = baIndex;
+
+        }
+      }
+
+
+
+    } // END: function showShoppingCart() //orderIndex
+
+    function getDiscount(setEl) {
+
+      var discTxt = (global_shoppingCart.discount.amount != 0) ? global_shoppingCart.discount.amount + ' %' : 'NO' + ' DISCOUNT';
+      console.log('DISCOUNT:############################################################## ' + discTxt);
+
+      if (setEl) document.getElementById('form.discount.percent').textContent = discTxt;
+      else return discTxt;
+    }
+
+    function setSendOrderButton(refresh) {
+
+      if (global_shoppingCart.shoppingCart.length < 1)
+        var sendButton = 'You need to add at least one item to the cart.';
+      else if (global_shoppingCart.customer._id == -1)
+        var sendButton = 'Please choose a customer';
+      else if (global_shoppingCart.customer.shippingAddress.Line1 == '')
+      var sendButton = 'Please add an address to this customer';
+      else
+        var sendButton = '<button onclick="updatePurchase();">'
+          + ((global_shoppingCart._id == -1) ? 'SEND ORDER' : 'UPDATE CART')
+          + '</button>';
+      if (refresh) {
+        document.getElementById('form.sendButton').innerHTML = sendButton;
+      } else {
+        return sendButton;
+      }
+    }
+
+
+    function updateDiscountDesc() {
+      console.log('DISCOUNT text UPDATED: ', event.target.value);
+      global_shoppingCart.discount.desc = event.target.value;
+      console.log(global_shoppingCart);
+    }
+
+    function addItemToBasket() {
+
+
+      // check if it is in basket
+      if (arguments.length > 0) {
+        var index = arguments[0];
+      } else {
+        var index = event.target.value;
+        console.log('index = 0');
+      }
+
+      if (index < 0) return;
+
+      console.log('add to basket: ', index);
+      console.log('add to basket: ', index);
+      var itemToAdd = customerAndItemData.items[index]
+      var newItem = { product: itemToAdd, quantity: 1 };
+      global_shoppingCart.shoppingCart.push(newItem);
+      refreshShoppingCart(global_shoppingCart_edit.orderIndex);
+      addItemDD(0);
+      setSendOrderButton(true);
+      setScrollToBottom();
+    }
+
+    function setScrollToBottom() {
+      var element = document.getElementById('form.scrollable');
+      element.scrollTop = element.scrollHeight;
+    }
+
+    function addItemDD() {  // DD
+
+      // check what is left:
+      var itemsLeft = [];
+      customerAndItemData.items.map((x, index) => {
+
+        var itemIndex = -1;
+        for (var i = 0; i < global_shoppingCart.shoppingCart.length; i++) {
+
+          if (global_shoppingCart.shoppingCart[i].product._id == x._id) {
+            itemIndex = i;
+            break;
+          }
+        }
+
+        console.log('global_shoppingCart.shoppingCart', global_shoppingCart.shoppingCart);
+        console.log('itemIndex', itemIndex);
+        console.log('x._id', x._id);
+        if (itemIndex == -1) {
+          var curX = x;
+          curX.val = index;
+          itemsLeft.push(curX);
+        }
+      });
+      console.log('customerAndItemData.items', customerAndItemData.items);
+      console.log('itemsLeft', itemsLeft);
+
+
+      var newDropDown = '';
+      console.log(itemsLeft.length);
+      if (itemsLeft.length < 1) {
+        newDropDown = 'All items added to cart!';
+      } else if (itemsLeft.length == 1) {
+        newDropDown = '<button onclick="addItemToBasket(' + itemsLeft[0].val + ');">Add ' + itemsLeft[0].Manufacturer + ' '
+          + itemsLeft[0].Model + ' €' + itemsLeft[0].Price
+          + '</button>';
+      } else {
+
+        var newItemDD = createDD(itemsLeft, 'form.DD_ADDitem', 'form.DD_ADDitem',
+          'val', ['Manufacturer', 'Model', 'Price'], 'addItemToBasket();', 'Add a product...');
+        newDropDown = '<div>' + newItemDD + '</div>';
+      }
+
+      if (arguments.length < 1) {
+        return newDropDown;
+      } else {
+        element = document.getElementById('form.addItem').innerHTML = newDropDown;
+      }
+
+    } // END: addItemDD()
+
+
+    function updatePurchase() { // sends the order info new or edited, to the back-end:
+
+      var elementID = global_shoppingCart._id;
+      delete global_shoppingCart._id;
+
+      setInfoBar('SENDING ORDER RECORD...' + elementID);
+
+      var cmd = (elementID == -1) ? 'add' : 'update';
+
+      superGoCollection(cmd, 'orders', { query: { _id: elementID }, update: global_shoppingCart }, (crudDataBack) => {
+        var crudDataBack = JSON.parse(crudDataBack);
+
+        global_shoppingCart.orderDate = Date.now();
+        if (cmd == 'add') {
+          setInfoBar('Your order has been sent.');
+          globalTable.data.push(crudDataBack.updated);
+        } else {
+          setInfoBar('Orders updated:' + crudDataBack.updated);
+          global_shoppingCart._id = elementID;
+          globalTable.data[global_shoppingCart_edit.orderIndex] = global_shoppingCart;
+        }
+
+        document.getElementById("dynamicTable").
+          innerHTML = showTable_items(globalTable);
+
+        showHidePopup('popUp2', false);
+        console.log(crudDataBack);
+      });
+
+    }
+
+    function sTable() {
+
+      if (arguments.length <= 0) return '';
+      var r = '<table><tbody><tr>';
+      for (var i in arguments) {
+        r += '<td>' + arguments[i] + '</td>';
+      }
+
+      r += '</tr></tbody></table>';
+      console.log(r);
+      return r;
+
+    }
+
+
+    // #################################################################################
+
+
+
+    function getRadioItems(value) {
+      return '<tr><td colspan="100%" style="border:0px;"><table><tbody><tr>'
+        + '<td class="sabToggle"><input type="radio" onchange=\'setAF(1);\' name="addressType" id="st1" value="1"><label for="Shipping &#38; Billing">Shipping &#38; Billing</label></td>'
+        + "<td class=\"sabToggle\"><input onchange='setAF(2);' type=\"radio\" name=\"addressType\" id=\"st2\" value=\"2\"><label for=\"shipping\">Shipping</label></td>"
+        + "<td class=\"sabToggle\"><input onchange='setAF(3);' type=\"radio\" name=\"addressType\" id=\"st3\" value=\"3\"><label for=\"billing\">Billing</label></td></tr></tbody></table></td></tr>"
+        + '<input type="hidden" id="type" name="addrType" value="' + value + '">';
+
+    } // END: function getRadioItems()
+
+
+
+    function setRadioItems(data, tablePos, addrTablePos) {
+
+      if (data.type > 0) {
+        document.getElementById("st" + data.type).checked = true;
+        global_FormAddressType = data.type;
+      }
+      console.log('RADIO: addrTablePos', addrTablePos);
+      if (globalTable.data[tablePos].hasOwnProperty('address')) {
+        var addrLen = globalTable.data[tablePos].address.length;
+      } else {
+        var addrLen = 0;
+      }
+
+      if ((addrTablePos == -1 && addrLen == 0) ||
+        ((addrTablePos > -1) && (globalTable.data[tablePos].address.length < 2)) || data.type == 1) {
+        document.getElementById("st1").checked = true;
+        document.getElementById("st2").disabled = true;
+        document.getElementById("st3").disabled = true;
+        global_FormAddressType = 1;                   //SHIPPING & BILLING ONLY SELECTION POSSIBLE
+
+      }
+      if (data.type == 2) {                           // This is SHIPPING, disable BILLING
+        document.getElementById("st3").disabled = true;
+      } else if (data.type == 3) {                    // This is BILLING, disable SHIPPING
+        document.getElementById("st2").disabled = true;
+      }
+
+
+    } //END: function setRadioItems()
+
+
+
+
+    function setAF(n) {
+      console.log(global_formBeforeEdit);
+      global_FormAddressType = n;
+      // document.getElementById('type').value = n;
+      console.log("global_FormAddressType: " + n);
+    }
+
+    function getAddress(x) {
+
+      return x.Line1 + (x.Line2.length > 0 ? ', ' : '') + x.Line2 + ', '
+        + x.Town + ', ' + x.County + ' ' + x.Eircode;
+
+    } // END: function getAddress()
+
+    function setAddressFlag() {
+      passOnFlag = event.target.value;
+      console.log('SAB flag: ', passOnFlag);
+    }
+
+    function getSABFlagSuccessor(curAddresses, addressRow) {
+
+      var tt = '';
+      var curAddress;
+      // ------------------------------------------------------------
+
+      var shippingList = [];
+      var ddListLabel = "";
+      var ddList = "<select id=\"sabAddr\" onchange=\"setAddressFlag()\" name=\"sabAddr\">";
+
+      for (var i = 0; i < curAddresses.length; i++) {
+        if (i != addressRow) {
+          curAddress = getAddress(curAddresses[i]);
+          ddList += "<option value=\"" + i + "\">" + curAddress + "</option>";
+          shippingList.push({ index: i, addr: curAddress });
+        }
+      } // for loop
+      passOnFlag = shippingList[0].index;
+      ddList += "</select>";
+      //    var addressDeleteData.id = shippingList[0].id;
+      // ------------------------------------------------------------
+
+      if (curAddresses[addressRow].type == 1) {
+
+        // ############ 2: Deleting S&B Address:
+
+        if (curAddresses.length == 2) {
+          tt += "<div class=\"neatText\"><b>The new Shipping and billing address will become:</b><br/>" + shippingList[0].addr + "</div>";
+        } else {
+          ddListLabel = "<div style=\"padding-bottom:20px;\">If so, please choose alternate SHIPPING AND BILLING address:</div>";
+          tt += "<div class=\"neatText\" style=\"padding:10px;\">" + ddListLabel + ddList + "</div>";
+        }
+
+      } else {
+
+        // ############ 3: Deleting Shipping or billing Address:
+
+        if (curAddresses[addressRow].type > 1) {
+          var naTXT = ((curAddresses[addressRow].type == 2) ? 'Shipping' : 'billing') + ' address';
+          if (curAddresses.length > 2) {
+            ddListLabel = "<label for=\"sabAddr\">If so, please choose alternate " + naTXT + " :</label>";
+            tt += "<div class=\"neatText\" style=\"padding: 10px 0px 10px;\">" + ddListLabel + ddList + "</div>";
+          } else {
+            tt += "<div class=\"neatText\" style=\"padding: 10px 0px 10px;\"><b>The new SHIPPING AND BILLING address will become:</b><br/>" + shippingList[0].addr + "</div>";
+          }
+        }
+
+      }
+
+      return tt;
+
+    } // END: function getFlagSABSuccessor()
+
+
+
+    function goDel_prompt(tablePos) {                  // ASKS THE USER IF THEY REALLY WANT TO DELETE THE RECORD
+      //goDelete_address
+
+      console.log('goDel_prompt: tablePos: ', tablePos);
+      var collectionName = globalTable.collectionName;
+      var elementID = globalTable.data[tablePos]._id;
+      var rcMenuElement = document.getElementById("popUp1");
+
+      if (arguments.length > 1) {
+        console.log('goDEL : ', arguments);
+
+
+        var editingAddress = true;
+        var addrTablePos = arguments[1];
+        recName = 'address';
+        var delFN = "goDelete_address(" + tablePos + ", " + addrTablePos + ");\"";
+        var info = getAddress(globalTable.data[tablePos].address[addrTablePos]);
+      } else {
+        if (collectionName == 'items') {
+          var info = globalTable.data[tablePos].Manufacturer + ' '
+            + globalTable.data[tablePos].Model + ' - €' + globalTable.data[tablePos].Price;
+        } else if (collectionName == 'orders') {
+          var info = 'Order by ' + globalTable.data[tablePos].customer.name + ' on date: '
+            + (new Date(globalTable.data[tablePos].orderDate).toLocaleString());
+        } else {
+          var info = globalTable.data[tablePos].Title + ' ' + globalTable.data[tablePos].FirstNames + ' ' + globalTable.data[tablePos].Surname;
+        }
+
+        var editingAddress = false;
+        var recName = collectionName;
+        var delFN = "goDelete(" + tablePos + ");\"";
+      }
+
+      var tt = "<div id=\"popUp1_\" class=\"topBar\"><span>Delete " + recName + " Record:</span><span style=\"float:right;\"><button onclick=\"showHidePopup('popUp1', false);\">x</button></span></div>"
+        + "<div class=popUpContainer><div>Are you sure you want to delete this customer record?</div>"
+        + '<div>' + info + '</div>';
+
+      if (editingAddress) {
+
+        var curAddresses = globalTable.data[tablePos].address;
+
+        if (curAddresses.length > 1 && curAddresses[addrTablePos].type > 0) {   // flag goes to other address if only 2, no choice
+          if (curAddresses[addrTablePos].type > 0)
+            tt += getSABFlagSuccessor(curAddresses, addrTablePos);
+        } else {
+          passOnFlag = -1;
+        }
+      }
+
+      tt += "<div class=\"promptBox_footer\"><button onclick=\"showHidePopup('popUp1', false);\">CANCEL</button><button onclick=\"" + delFN + ">YES</button></div></div>";
+      rcMenuElement.innerHTML = tt;
+      //      setPos(rcMenuElement);
+      rcMenuElement.style.display = "block";
+      allowDrag('popUp1');
+
+    } // END: goDel_prompt()
+
+
+
+    function setPos(element) {
+      elRect = { width: 260, height: 330 };
+
+      // console.log(document.getElementById('id').getBoundingClientRect())
+
+      var scrollLeft = (window.pageXOffset !== undefined) ? window.pageXOffset : (document.documentElement || document.body.parentNode || document.body).scrollLeft;
+      var scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+
+      var eventX = event.pageX;
+      var eventY = event.pageY;
+      var windowWidth = document.documentElement.clientWidth;
+      var windowHeight = document.documentElement.clientHeight;
+
+      console.log(eventX + " - " + eventY);
+
+      element.style.left = eventX;
+      element.style.top = eventY;
+
+
+    } // END: function setPos()
+
+    // -----------------------------------------------------------
+
+    function printTR_items(obj, i) { //collectionName, elementID, tablePos
+      return '<tr onclick="superForm(\'items\', ' + i + ');"><td class="superBut2" onclick="event.stopPropagation(); goDel_prompt(' + i + ');">DEL</td><td>' +
+        obj.Manufacturer + '</td><td>' + obj.Model + '</td><td>€ ' + obj.Price + '</td></tr>';
+    } // END: function printTR_items()
+
+    function goEdAddress(i, ii) {
+      //    console.log(i,ii, ' ' + globalTable.data[i]._id);
+      //    console.log('del: ',JSON.stringify(globalTable.data[i][key][ii]) );
+      superForm('address', i, ii);
+      //superForm(\'popUp1\', '+i+');
+    }
+
+    function goEdOrders(i, ii, key) {
+      console.log('EDIT ORDER ITEMS')
+      //    console.log(i,ii, ' ' + globalTable.data[i]._id);
+      //    console.log('del: ',JSON.stringify(globalTable.data[i][key][ii]) );
+      //    superForm(key,i,ii);
+      //superForm(\'popUp1\', '+i+');
+    }
+
+    function goDelAddress(i, ii) {
+      console.log(i, ii, ' ' + globalTable.data[i]._id);
+      console.log('del: ', JSON.stringify(globalTable.data[i].address[ii]));
+    }
+
+    function printTR_customers(obj, i) {
+      var addr = '';
+      var pm;
+      var sab = ['', 'S&B', 'S', 'B'];
+
+      if (obj.hasOwnProperty('address'))
+        obj.address.map((x, ii) => {
+
+          pm = '(' + i + ', ' + ii + ');';
+
+          addr += '<tr class=\"adr_lab\">' +
+            '<tr class="adr_lab">'
+            + '<td width="7px" style="font-size: 8px;"onclick="goDel_prompt' + pm + '"> DELETE </td>'
+            + '<td width="7px" style="font-size: 8px;"onclick="goEdAddress(' + i + ', -1);"> NEW </td>'
+
+            + '<td onclick="goEdAddress' + pm + '">' + x.Line1 + ', ' + x.Line2 + ', ' + x.Town + ', ' + x.County + ' ' + x.Eircode + '<td/>'
+            + '<td width="5px" text-align:right">' + addressTypes[x.type] + '</td></tr>';
+        });
+      if (addr.length > 0) {
+        addr = '<table class="addressTable"><tbody>' + addr + '</tbody></table>';
+      }
+
+      return '<tr onclick="superForm(\'customers\', ' + i + ');"><td class="superBut2" onclick="event.stopPropagation(); goDel_prompt(' + i + ');">DEL</td>'
+        + '<td>' + obj.Title + ' ' + obj.FirstNames + ' ' + obj.Surname + '</td><td>' + obj.Mobile + '</td><td>' + obj.Email + '</td>'
+        + '<td class="superBut2" onclick="event.stopPropagation(); goEdAddress(' + i + ', -1);"> '+i+' NEW ADDRESS</td></tr>'
+        + '<tr><td colspan="100%">' + addr + '</td></tr>';
+    } // END: function printTR_customers()
+
+    function changeCart(orderIndex, itemIndex, n) {
+      var updated = false;
+
+      if (itemIndex > -1) { // if we are changing a product quantity:
+        var newQuantity = global_shoppingCart.shoppingCart[itemIndex].quantity + n;
+        if (newQuantity > -1) {
+          if (newQuantity == 0) {
+            global_shoppingCart.shoppingCart.splice(itemIndex, 1);
+            setSendOrderButton(true);
+          } else {
+            global_shoppingCart.shoppingCart[itemIndex].quantity = newQuantity;
+          }
+
+          updated = true;
+        }
+
+      } else { // if we are chaning the discount field:
+        var newQuantity = global_shoppingCart.discount.amount + n;
+        console.log('discount now: ' + newQuantity);
+
+        if (newQuantity >= 0 && newQuantity <= 100) {
+          global_shoppingCart.discount.amount = newQuantity;
+          getDiscount(true);
+          updated = true;
+        }
+      }
+
+      if (updated) {
+        if (!global_shoppingCart_edit.edited) {
+          if (checkPriceUpdates()) {
+            global_shoppingCart_edit.message = 'Editing cart - prices updated to present.';
+          }
+          global_shoppingCart_edit.edited = true;
+        }
+        refreshShoppingCart(orderIndex);
+        addItemDD(0);
+      }
+
+    } // END: function changeCart()
+
+    function refreshShoppingCart(orderIndex) {
+      document.getElementById('form.cart').innerHTML = printShoppingCart(global_shoppingCart, orderIndex, true);
+    }
+
+
+    function checkPriceUpdates() { //duckk
+      var updated = false;
+
+      for (var x of global_shoppingCart.shoppingCart) {
+
+        var itemIndex = findIndex(customerAndItemData.items, '_id', x.product._id);
+        if (itemIndex >= 0) {
+          if (x.product.Price != customerAndItemData.items[itemIndex].Price) {
+            x.product.Price = customerAndItemData.items[itemIndex].Price;
+            updated = true;
+          }
+        }
+      }
+      return updated;
+
+    } // END: function checkPriceUpdates()
+
+
+    function prBut(label, onClickFN) {
+      return '<div class="superBut" onclick="' + onClickFN + '">' + label + '</div>';
+    }
+
+
+    function printShoppingCart(obj, i, functionality) {
+
+      var shoppingCart = '';
+      var totalPrice = 0;
+      if (functionality) var aClass = 'adr_lab2'; else var aClass = 'adr_lab';
+      if (obj.hasOwnProperty('shoppingCart'))
+        obj.shoppingCart.map((x, ii) => {
+          shoppingCart += '<tr>';
+
+          if (functionality) {
+            shoppingCart += '<td>' + prBut(' - ', 'changeCart(' + i + ', ' + ii + ',-1);') + '</td>';
+            shoppingCart += '<td>' + prBut(' + ', 'changeCart(' + i + ', ' + ii + ',1);') + '</td>';
+          }
+
+          shoppingCart += '<td style="width:100%; padding-left:5px;" class=\"' + aClass + '">' + x.quantity + ' x ' + x.product.Manufacturer + ' ' + x.product.Model + ' €' + x.product.Price
+            + '</td></tr>';
+          totalPrice += (x.quantity * x.product.Price);
+
+
+        });
+      if (shoppingCart.length > 0) {
+
+        var discount = 0;
+
+        if (obj.discount.amount > 0 || functionality) {
+          discount = Math.round(parseFloat(totalPrice / 100 * obj.discount.amount) * 100) / 100;
+
+          shoppingCart += '<tr><td colspan="3">' + obj.discount.desc + '</td></tr>'
+            + '<tr><td colspan="3"> Total Price: €' + Math.round((totalPrice) * 100) / 100 + '</td></tr>'
+            + '<tr><td colspan="3"> Minus Discount (' + obj.discount.amount + '%) : €' + discount + '</td></tr>';
+        }
+        var netPrice = Math.round((totalPrice - discount) * 100) / 100;
+        shoppingCart += '<tr><td colspan="3"> Price to Pay: €' + netPrice + '</td></tr>';
+        if (functionality) shoppingCart += '<tr><td colspan="3">' + global_shoppingCart_edit.message + '</td></tr>';
+        shoppingCart = '<table class="addressTable"><tbody>' + shoppingCart + '</tbody></table>';
+      }
+      console.log('sc----------------------------:' + shoppingCart);
+      return shoppingCart;
+    }
+    // orderIndex
+
+    function printTR_orders(obj, i) {
+
+      var shoppingCart = printShoppingCart(obj, i);
+
+      var date = (new Date(obj.orderDate).toLocaleString()); 
+      var shipAddr = obj.customer.shippingAddress.Line1 + (obj.customer.shippingAddress.Line2.length > 0 ? ', ' : '') + obj.customer.shippingAddress.Line2 + ', ' +
+        obj.customer.shippingAddress.Town + ', ' + obj.customer.shippingAddress.County + ' ' + obj.customer.shippingAddress.Eircode;
+      var billAddr = obj.customer.billingAddress.Line1 + (obj.customer.billingAddress.Line2.length > 0 ? ', ' : '') + obj.customer.billingAddress.Line2 + ', ' +
+        obj.customer.billingAddress.Town + ', ' + obj.customer.billingAddress.County + ' ' + obj.customer.billingAddress.Eircode;
+
+      return '<tr onclick="goShoppingCart(' + i + ');"><td class="superBut2" onclick="event.stopPropagation(); goDel_prompt(' + i + ');">DEL</td><td>' + date + '</td>' +
+        '<td >' + obj.customer.name + '</td>'
+        + '<td><table class="addressTable"><tbody>'
+        + '<tr onclick="goShoppingCart(' + i + ');"><td><b>SHIPPING:</b> ' + shipAddr + '</td></tr><tr><td><b>BILLING:</b> ' + billAddr + '</td></tr></tbody></table></td>'
+        + '</tr><tr onclick="goShoppingCart(' + i + ');"><td colspan="100%">' + shoppingCart + '</td></tr>';
+    } // END: function printTR_orders()
+
+
+    function showTable_items(tableObject) {
+      var recCount = tableObject.data.length;
+      console.log('recCount',recCount);
+      var tableHTML = '<div class="topBar">Collection: ' + tableObject.collectionName 
+        + ' (' + ((recCount > 0) ? recCount : 'No') +' records)</div>'
+        + "<table class=\"flexiTable\"><tbody>";
+
+      if (tableObject.collectionName == 'items') {
+        var trFN = printTR_items;
+      } else if (tableObject.collectionName == 'customers') {
+        var trFN = printTR_customers;
+      } else {
+        var trFN = printTR_orders;
+      }
+
+      for (var i = 0; i < tableObject.data.length; i++) {
+        tableHTML += trFN(tableObject.data[i], i);
+      }
+
+      tableHTML += "</tbody></table";
+      return tableHTML;
+
+    } // END: function showTable_items()
+
+
+    function createDynamicTable(tableObject) {
+      var tableHTML = "<div>Collection: " + tableObject.collectionName + "</div><table class=\"flexiTable\"><tbody>";
+
+      //        for (var i=0; i<tableObject.length; i++) {
+
+      for (var key in tableObject.data) {
+        tableHTML += '<tr>';
+
+        // skip prototype property
+        //        if (!tableObject.data.hasOwnProperty(key)) continue;
+
+        var obj = tableObject.data[key];
+        for (var prop in obj) {
+          // skip prototype property
+          //          if (!obj.hasOwnProperty(prop)) continue;
+
+          tableHTML += "<td>" + obj[prop] + "</td>";
+
+        }
+        tableHTML += '</tr>';
+      }
+
+
+      //        }
+      tableHTML += "</tbody></table";
+      return tableHTML;
+
+    } // END: function createDynamicTable()
+
+
+    function forceDownload(filename, obj) {
+      var element = document.createElement('a');
+      element.setAttribute('href', 'data:application/json; charset=UTF-8,' + encodeURIComponent(obj));
+      element.setAttribute('download', filename);
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    }
+
+
+    function goDumpDB() {
+
+      setInfoBar('Retrieving all data from database...');
+
+      console.log("requesting data...");
+
+      goServer("GET",SERVER_ADDRESS + 'GET_DUMP/',
+        (crudDataBack) => {
+          const dataDUMP = crudDataBack;
+
+          var crudDataBack = JSON.parse(crudDataBack);
+          const dbDUMP = JSON.stringify(crudDataBack);
+          var d = new Date();
+          var filename = 'DB_dump_' + d.getDate().toString().padStart(2, '0')
+            + "-" + (d.getMonth() + 1).toString().padStart(2, '0')
+            + "-" + d.getFullYear() + "_"
+            + d.getHours().toString().padStart(2, '0')
+            + "-" + d.getMinutes().toString().padStart(2, '0') + '.JSON';
+
+          forceDownload(filename, dbDUMP);
+          console.log(crudDataBack);
+          setInfoBar('Data dump complete');
+        });
+
+    } // END: function goDumpDB()
+
+
+
+    function setInfoBar(txt) {
+      document.getElementById('infoBar').innerHTML = txt;
+    }
+
+  </script>
+
+</head>
+
+<body onload="onLoadFunction('start');">
+
+  <div class="topMenu" style="padding: 10px;">
+    <span>
+
+      <table class="container">
+        <tbody>
+          <tr>
+            <td><span class="menuItem" onclick="showCollection('items');">Items</span></td>
+            <td><span class="menuItem" onclick="showCollection('customers');">Customers</span></td>
+            <td><span class="menuItem" onclick="showCollection('orders');">Orders</span></td>
+            <td><span class="menuItem" id="button.addRecord" onclick="superForm('*', -1);">Add Record</span></td>
+            <td><span class="menuItem" id="button.addRecord" onclick="goDumpDB();">Dump DB</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+
+    </span>
+
+  </div>
+  <span class="infoBar" id="infoBar">LOADING DATABASE...</span>
+
+  <div class="promptBox" id="popUp1"><span id="popUp1_"></span></div>
+  <div class="shoppingCartWindow" id="popUp2"><span id="popUp2_"></span></div>
+  <div class="promptBox2" id="popUp3"><span id="popUp3_"></span></div>
+
+  <div id="statText"></div>
+  <div id="dynamicTable" style="padding-top:30px;"></div>
+
+  <div>
+
+</body>
+
+</HTML>
